@@ -3,13 +3,15 @@ project(glim_ros)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake")
+add_definitions(-fPIC)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build." FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-option(BUILD_WITH_CUDA "Build with GPU support" ON)
+option(BUILD_WITH_CUDA "Build with GPU support" OFF)
 option(BUILD_WITH_VIEWER "Build with visualizer" ON)
 
 find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport tf2_ros roslib rosbag sensor_msgs)
@@ -39,6 +41,8 @@ if(BUILD_WITH_VIEWER)
 endif()
 
 if(BUILD_WITH_CUDA)
+  message(STATUS "------------------------------")
+  message(STATUS "Will BUILD_WITH_CUDA")
   add_definitions(-DBUILD_GTSAM_POINTS_GPU)
 endif()
 
